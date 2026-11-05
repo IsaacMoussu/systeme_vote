@@ -11,13 +11,16 @@ while true; do
         catvote)
             ./scripts/catvote.sh "$args"
             ;;
-	rmvote|editvote)
-	    #supprime un vote deja cree
-	    ;;
-	lsvote)
-	    #affiche les votes crée par un utilisateurs donné
-	    ./lsvote.sh "$args" 
-	    ;;
+        rmvote|editvote)
+            #supprime un vote deja cree
+            ;;
+        repvote)
+            #repond a un vote
+            ;;
+        lsvote)
+            #affiche les votes crée par un utilisateurs donné
+            ./lsvote.sh "$args" 
+            ;;
         quit|exit)
             echo "Au revoir !"
             break
