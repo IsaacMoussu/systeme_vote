@@ -15,7 +15,7 @@ while true; do
             #supprime un vote deja cree
             ;;
         repvote)
-            #repond a un vote
+            #repond a un vote bonjooooour
             ;;
         lsvote)
             #affiche les votes crée par un utilisateurs donné
