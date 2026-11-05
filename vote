@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+echo "Bienvenue dans le système de vote."
+while true; do
+    read -ep "runvote> " cmd args
+    case "$cmd" in
+        newvote)
+            # Appel de ton script ou fonction de création
+            ./newvote.sh
+            ;;
+        catvote)
+            ./scripts/catvote.sh "$args"
+            ;;
+	rmvote|editvote)
+	    #supprime un vote deja cree
+	    ;;
+	lsvote)
+	    #affiche les votes crée par un utilisateurs donné
+	    ./lsvote.sh "$args" 
+	    ;;
+        quit|exit)
+            echo "Au revoir !"
+            break
+            ;;
+        *)
+            echo "Commande inconnue : $cmd"
+            ;;
+    esac
+done
