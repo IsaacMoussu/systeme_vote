@@ -9,10 +9,21 @@ while true; do
             ./newvote.sh
             ;;
         catvote)
-            ./scripts/catvote.sh "$args"
+            if [ -z "$args" ]
+            then
+                echo "veuillez choisir un numéro de vote"
+            fi
+            if [ ! -z "$args" ]
+            then
+                ./catvote.sh "$args"
+            fi
             ;;
-        rmvote|editvote)
+        rmvote)
             #supprime un vote deja cree
+            
+            ;;
+        editvote)
+            #modifie un vote deja cree
             ;;
         repvote)
             #repond a un vote bonjooooour encoooooore
