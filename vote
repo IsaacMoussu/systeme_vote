@@ -9,11 +9,14 @@ while true; do
             ./newvote.sh
             ;;
         catvote)
+            nb_args=$(echo "$args" | wc -w)
             if [ -z "$args" ]
             then
                 echo "veuillez choisir un numéro de vote"
-            fi
-            if [ ! -z "$args" ]
+            elif [ "$nb_args" -ge 2 ]
+            then
+                echo "veuillez choisir un seul vote"
+            elif [ ! -z "$args" ]
             then
                 ./catvote.sh "$args"
             fi

@@ -38,4 +38,4 @@ do
     read -ep "durée du vote en heure>" duree 
 done
 
-echo "$numvote" \t "$auteur" \t "$question" \t "$choix" \t "$reponse" \t "$date" \t "$duree" >> liste
+echo "$numvote" / "$auteur" / "$question" / "$choix" / "$reponse" / "$date" / "$duree" >> liste

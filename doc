@@ -1,0 +1,25 @@
+# OPERATEURS DE COMPARAISON
+# -eq  Égal à
+# -ne  Différent de
+# -gt  Plus grand que
+# -ge  Plus grand ou égal à
+# -lt  Plus petit que
+# -le  Plus petit ou égal à
+
+# OPERATEURS SUR LES FICHIERS
+# -e Vérifie si un fichier existe
+# -f Vérifie si c'est un fichier régulier
+# -d Vérifie si c'est un répertoire
+# -r Vérifie si le fichier est lisible
+# -w Vérifie si le fichier est modifiable
+# -x Vérifie si le fichier est exécutable
+
+# OPERATEURS DE CHAINE
+# = Égalité
+# != Inégalité
+# -z Vérifie si la chaîne est vide
+# -n Vérifie si la chaîne n'est pas vide
+
+# $# nombre d'arguments
+# tous les arguments séparés
+# tous les arguments en une seule chaine
