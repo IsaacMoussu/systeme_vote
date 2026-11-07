@@ -27,8 +27,18 @@
 # AWK
 # $0 la ligne courante entière
 # NF nombre de mots dans la ligne
+# $NF dernier terme de la ligne
 # NR numero de la ligne
 # FS definir le séparateur
 # OFS remplace le séparateur par un autre
 # BEGIN { ... } : Exécuté avant de lire la première ligne du fichier
 # END { ... } : Exécuté après avoir lu la dernière ligne du fichier
+
+# REGEX
+# ^ debut de chaine
+# $ fin de chaine
+# -? autorisé les nombres négatifs (avant crochets)
+# + un ou plusieurs caractères (après crochets)
+# [] caractère autorisé dans les crochets
+# \ un espace obligatoire
+# (mot|valide) mots autorisé (après crochets)

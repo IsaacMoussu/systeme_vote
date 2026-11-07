@@ -38,16 +38,26 @@ do
     reponse="$reponse"+"$rep"
 done
 
-read -ep "durée du vote en heure :" duree
-while [ -z "$duree" ]
+read -ep "durée du vote(days hours min):" duree
+while [[ -z "$duree" || ! ("$duree" =~ ^[0-9[:space:]]+$) ]]
 do
-    echo "veuillez saisir une durée :"
-    read -ep "durée du vote en heure :" duree 
+    if [ -z "$duree" ]; then
+        echo "veuillez saisir une durée :"
+        read -ep "durée du vote en heure :" duree
+    fi
+    if [[ ! ("$duree" =~ ^[0-9[:space:]]+$) ]]; then
+        echo "veuillez saisir un nombre :"
+        read -ep "durée du vote en heure :" duree
+    fi
 done
 
 echo "---------------"
 
-numvote=$(($(wc -l < liste)+1))
-date=$(date +"%Y %m %d")
+numvote=$(($(awk -F/ 'END {print $1}' liste)+1))
 
-echo "$numvote"/"$auteur"/"$question"/"$reponse"/"$choix"/"$date"/"$duree" >> liste
+read days hours min <<< "$duree"
+date_debut=$(date +"%Y-%m-%d %H:%M")
+date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
+
+
+echo "$numvote"/"$auteur"/"$question"/"$reponse"/"$choix"/"$date_debut"/"$date_fin" >> liste
