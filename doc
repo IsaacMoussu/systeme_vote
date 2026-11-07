@@ -1,4 +1,4 @@
-# OPERATEURS DE COMPARAISON
+# OPERATEURS DE COMPARAISON ARITHMETIQUE
 # -eq  Égal à
 # -ne  Différent de
 # -gt  Plus grand que
@@ -21,5 +21,14 @@
 # -n Vérifie si la chaîne n'est pas vide
 
 # $# nombre d'arguments
-# tous les arguments séparés
-# tous les arguments en une seule chaine
+# $@ tous les arguments séparés
+# $* tous les arguments en une seule chaine
+
+# AWK
+# $0 la ligne courante entière
+# NF nombre de mots dans la ligne
+# NR numero de la ligne
+# FS definir le séparateur
+# OFS remplace le séparateur par un autre
+# BEGIN { ... } : Exécuté avant de lire la première ligne du fichier
+# END { ... } : Exécuté après avoir lu la dernière ligne du fichier

@@ -2,7 +2,7 @@
 
 echo "Bienvenue dans le système de vote."
 while true; do
-    read -ep "runvote> " cmd args
+    read -ep "saisir une commande : " cmd args
     case "$cmd" in
         newvote)
             # Appel de ton script ou fonction de création
