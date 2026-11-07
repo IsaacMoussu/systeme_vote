@@ -5,10 +5,11 @@ while true; do
     read -ep "saisir une commande : " cmd args
     case "$cmd" in
         newvote)
-            # Appel de ton script ou fonction de création
+            # crée un nouveau vote
             ./newvote.sh
             ;;
         catvote)
+            # affiche le contenu d'un vote en donnant son numéro
             nb_args=$(echo "$args" | wc -w)
             if [ -z "$args" ]
             then
@@ -16,14 +17,22 @@ while true; do
             elif [ "$nb_args" -ge 2 ]
             then
                 echo "veuillez choisir un seul vote"
-            elif [ ! -z "$args" ]
-            then
+            else
                 ./catvote.sh "$args"
             fi
             ;;
         rmvote)
-            #supprime un vote deja cree
-            
+            #supprime un vote deja créé en donnant son numéro et auteur
+            nb_args=$(echo "$args" | wc -w)
+            if [[ -z "$args" || ! ("$args" =~ ^[0-9[:space:]]+$) ]]
+            then
+                echo "veuillez choisir un numéro de vote"
+            elif [ "$nb_args" -ge 2 ]
+            then
+                echo "veuillez choisir un seul vote"
+            else
+                ./rmvote.sh "$args"
+            fi
             ;;
         editvote)
             #modifie un vote deja cree
