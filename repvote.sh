@@ -30,9 +30,9 @@ question=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $3}' listevote)
 echo "la question est : $question"
 choix=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $5}' listevote)
 if [ "$choix" == 0 ]; then
-    echo "choisissez une réponse parmi les suivantes :"
+    echo "choisissez un numéro de réponse parmi les suivantes :"
 else
-    echo "choisissez une ou plusieurs réponses parmi les suivantes :"
+    echo "choisissez un ou plusieurs numéros de réponse parmi les suivantes :"
 fi
 
 reponse=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote)
@@ -45,12 +45,41 @@ do
     fi
 done
 
+nbr_reponse=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | tr + ' ' | wc -w)
 if [ "$choix" == 0 ]; then
     read -ep "votre réponse : " rep
-    if [[ -z "$rep" || ! ("$rep" =~ ^[0-9[:space:]]+$) ]]; then
-    
+    while [[ -z "$rep" || ! ("$rep" =~ ^[1-"$nbr_reponse"]+$) ]]; do
+        echo "aucune réponse ne correspond"
+        read -ep "votre réponse : " rep
+    done
+    # enregistre la reponse dans listereponse
+    enregistre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
+    echo "$numvote/$pseudo/$enregistre" >> listereponse
+    echo "votre réponse a bien été enregistrée"
 else
-fi
-else
+    i=1
+    read -ep "votre réponse $i : " rep
+    while [[ -z "$rep" || ! ("$rep" =~ ^[1-"$nbr_reponse"]+$) ]]; do
+        echo "aucune réponse ne correspond"
+        read -ep "votre réponse $i : " rep
+        
+    done
+    enregistre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
+    ((i++))
+    while [[ -n "$rep" && "$i" -le "$nbr_reponse" ]]; do
+        read -ep "votre réponse $i : " rep
+        while [[ -n "$rep" && ! ("$rep" =~ ^[1-"$nbr_reponse"]+$) ]]; do
+            echo "aucune réponse ne correspond"
+            read -ep "votre réponse $i : " rep
+        done
+        if [ -n "$rep" ]; then
+            autre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
+            enregistre="$enregistre+$autre"
+            ((i++))
+        fi
+    done
+    echo "$numvote/$pseudo/$enregistre" >> listereponse
+    echo "votre réponse a bien été enregistrée"
 fi
 
+echo "------------------------------"
