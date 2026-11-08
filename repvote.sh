@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 
-numvote=$1
+read drapeau chiffre <<< "$1"
+if [ -z "$chiffre" ]; then
+    numvote="$drapeau"
+elif [ "$drapeau" != "-m" ]; then
+    echo "Commande inconnue : $drapeau"
+    exit 1
+else
+    # mode modifier reponse
+    numvote="$chiffre"
+fi
 
 num=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $1}' listevote)
 ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' listevote) # numéro de ligne correspondant au vote choisit
@@ -14,7 +23,16 @@ if [ "$num" != "$numvote" ]; then
 fi
 
 autorise=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $8}' listevote)
+today=$(date +%s) # converti en seconde
+date_fin=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $7}' listevote)
+timestamp=$(date -d "$date_fin" +%s) # converti en seconde
 if [ "$autorise" != "ouvert" ]; then
+    echo "le vote numéro $numvote est fermé"
+    echo "------------------------------"
+    exit 1
+elif [ "$today" -ge "$timestamp"  ]; then
+    ferme=$(awk -F/ -v ligne="$ligne" 'BEGIN {OFS="/"} NR == ligne {$8="fermé"} {print $0}' listevote)
+    echo "$ferme" > listevote
     echo "le vote numéro $numvote est fermé"
     echo "------------------------------"
     exit 1

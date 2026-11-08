@@ -47,9 +47,9 @@ while true; do
         repvote)
             #repond a un vote
             nb_args=$(echo "$args" | wc -w)
-            if [[ -z "$args" || ! ("$args" =~ ^[0-9[:space:]]+$) ]]; then
+            if [[ -z "$args" || ! ("$args" =~ ^[-0-9m[:space:]]+$) ]]; then
                 echo "veuillez choisir un numéro de vote"
-            elif [ "$nb_args" -ge 2 ]; then
+            elif [ "$nb_args" -ge 3 ]; then
                 echo "veuillez choisir un seul vote"
             else
                 ./repvote.sh "$args"
