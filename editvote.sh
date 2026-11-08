@@ -3,11 +3,19 @@
 numvote=$1
 
 num=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $1}' liste)
+ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' liste) # numéro de ligne correspondant au vote choisit
 
 echo "------------------------------"
 
 if [ "$num" != "$numvote" ]; then
-    echo "le vote numéro $numvote n'existe pas "
+    echo "le vote numéro $numvote n'existe pas"
+    echo "------------------------------"
+    exit 1
+fi
+
+autorise=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $9}' liste)
+if [ "$autorise" != "modifiable" ]; then
+    echo "le vote numéro $numvote n'est pas modifiable"
     echo "------------------------------"
     exit 1
 fi
@@ -22,7 +30,6 @@ if [ "$auteur" != "$auteurvote" ]; then
 fi
 
 # modifie le vote
-ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' liste) # numéro de ligne correspondant au vote choisit
 while true; do
     echo "donner le numéro de ce que vous voulez vous modifier ?"
     echo -e "1 : question\n2 : réponses\n3 : choix multiple\n4 : durée du vote\n5 : sortir des modifications"

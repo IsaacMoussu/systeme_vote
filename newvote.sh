@@ -59,4 +59,4 @@ date_debut=$(date +"%Y-%m-%d %H:%M")
 date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
 
 
-echo "$numvote"/"$auteur"/"$question"/"$reponse"/"$choix"/"$date_debut"/"$date_fin"/"ouvert" >> liste
+echo "$numvote"/"$auteur"/"$question"/"$reponse"/"$choix"/"$date_debut"/"$date_fin"/"ouvert"/"modifiable" >> liste
