@@ -2,8 +2,8 @@
 
 numvote=$1
 
-num=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $1}' liste)
-ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' liste) # numéro de ligne correspondant au vote choisit
+num=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $1}' listevote)
+ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' listevote) # numéro de ligne correspondant au vote choisit
 
 echo "------------------------------"
 
@@ -13,7 +13,7 @@ if [ "$num" != "$numvote" ]; then
     exit 1
 fi
 
-autorise=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $9}' liste)
+autorise=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $9}' listevote)
 if [ "$autorise" != "modifiable" ]; then
     echo "le vote numéro $numvote n'est pas modifiable"
     echo "------------------------------"
@@ -21,7 +21,7 @@ if [ "$autorise" != "modifiable" ]; then
 fi
 
 read -ep "saisir le nom de l'auteur du vote :" auteur
-auteurvote=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $2}' liste)
+auteurvote=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $2}' listevote)
 
 if [ "$auteur" != "$auteurvote" ]; then
     echo "le nom de l'auteur ne correspond pas"
@@ -41,8 +41,8 @@ while true; do
                 echo "modification impossible"
                 echo "------------------------------"
             else # remplacer la question
-                newQ=$(awk -F/ -v ligne="$ligne" -v question="$question" 'NR == ligne {$3=question} {OFS="/"; print $0 }' liste)
-                echo "$newQ" > liste
+                newQ=$(awk -F/ -v ligne="$ligne" -v question="$question" 'NR == ligne {$3=question} {OFS="/"; print $0 }' listevote)
+                echo "$newQ" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"
             fi
@@ -63,8 +63,8 @@ while true; do
                     read -ep "nouvelle réponse "$i" :" rep
                     reponse="$reponse"+"$rep"
                 done
-                newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'NR == ligne {$4=reponse} {OFS="/"; print $0 }' liste)
-                echo "$newR" > liste
+                newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'NR == ligne {$4=reponse} {OFS="/"; print $0 }' listevote)
+                echo "$newR" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"
             fi
@@ -75,8 +75,8 @@ while true; do
                 echo "modification impossible"
                 echo "------------------------------"
             else # remplacer le choix
-                newC=$(awk -F/ -v ligne="$ligne" -v choix="$choix" 'NR == ligne {$5=choix} {OFS="/"; print $0 }' liste)
-                echo "$newC" > liste
+                newC=$(awk -F/ -v ligne="$ligne" -v choix="$choix" 'NR == ligne {$5=choix} {OFS="/"; print $0 }' listevote)
+                echo "$newC" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"
             fi
@@ -88,10 +88,10 @@ while true; do
                 echo "------------------------------"
             else # remplacer la question
                 read days hours min <<< "$duree"
-                date_debut=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $6 }' liste)
+                date_debut=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $6 }' listevote)
                 date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
-                newD=$(awk -F/ -v ligne="$ligne" -v date_fin="$date_fin" 'NR == ligne {$7=date_fin} {OFS="/"; print $0 }' liste)
-                echo "$newD" > liste
+                newD=$(awk -F/ -v ligne="$ligne" -v date_fin="$date_fin" 'NR == ligne {$7=date_fin} {OFS="/"; print $0 }' listevote)
+                echo "$newD" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"
             fi
