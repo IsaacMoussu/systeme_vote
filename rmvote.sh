@@ -19,7 +19,7 @@ if [ "$auteur" != "$auteurvote" ]; then
     echo "le nom de l'auteur ne correspond pas"
     echo "------------------------------"
     exit 1
-elif [ "$auteur" == "$auteurvote" ]; then #supprime la ligne
+else #supprime la ligne
     ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' liste)
     modif=$(awk -F/ -v ligne="$ligne" 'NR != ligne {OFS="/"; print $0 }' liste)
     echo "$modif" > liste

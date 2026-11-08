@@ -37,6 +37,18 @@ while true; do
                 ./editvote.sh "$args"
             fi
             ;;
+        closevote)
+            nb_args=$(echo "$args" | wc -w)
+            if [[ -z "$args" || ! ("$args" =~ ^[0-9[:space:]]+$) ]]
+            then
+                echo "veuillez choisir un numéro de vote"
+            elif [ "$nb_args" -ge 2 ]
+            then
+                echo "veuillez choisir un seul vote"
+            else
+                ./closevote.sh "$args"
+            fi
+            ;;
         repvote)
             #repond a un vote
             ;;
