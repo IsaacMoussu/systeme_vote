@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "---------------"
+echo "------------------------------"
 
 read -ep "auteur :" auteur 
 while [ -z "$auteur" ]
@@ -24,17 +24,16 @@ do
 done
 
 i=1
-read -ep "reponse "$i" :" reponse
+read -ep "réponse "$i" :" reponse
 while [[ -n "$rep" || "$i" -eq 1 ]]
 do
     while [[ -z "$reponse" && "$i" -eq 1 ]]
     do
-        echo "veuillez saisir une reponse :"
-        read -ep "reponse "$i" :" reponse
+        echo "veuillez saisir une réponse :"
+        read -ep "réponse "$i" :" reponse
     done
-    i=$(("$i"+1))
-    echo $i
-    read -ep "reponse "$i" :" rep
+    ((i++))
+    read -ep "réponse "$i" :" rep
     reponse="$reponse"+"$rep"
 done
 
@@ -51,7 +50,7 @@ do
     fi
 done
 
-echo "---------------"
+echo "------------------------------"
 
 numvote=$(($(awk -F/ 'END {print $1}' liste)+1))
 

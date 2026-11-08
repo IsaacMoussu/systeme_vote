@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+numvote=$1
+
+num=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $1}' liste)
+
+echo "------------------------------"
+
+if [ "$num" != "$numvote" ]; then
+    echo "le vote numéro $numvote n'existe pas "
+    echo "------------------------------"
+    exit 1
+fi
+
+read -ep "saisir le nom de l'auteur du vote :" auteur
+auteurvote=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $2}' liste)
+
+if [ "$auteur" != "$auteurvote" ]; then
+    echo "le nom de l'auteur ne correspond pas"
+    echo "------------------------------"
+    exit 1
+fi
+
+# modifie le vote
+ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' liste) # numéro de ligne correspondant au vote choisit
+while true; do
+    echo "donner le numéro de ce que vous voulez vous modifier ?"
+    echo -e "1 : question\n2 : réponses\n3 : choix multiple\n4 : durée du vote\n5 : sortir des modifications"
+    read -e modif
+    case "$modif" in
+        1)
+            read -ep "donner votre nouvelle question : " question
+            if [ -z "$question" ]; then
+                echo "modification impossible"
+                echo "------------------------------"
+            else # remplacer la question
+                newQ=$(awk -F/ -v ligne="$ligne" -v question="$question" 'NR == ligne {$3=question} {OFS="/"; print $0 }' liste)
+                echo "$newQ" > liste
+                echo "modification effectuée"
+                echo "------------------------------"
+            fi
+            ;;
+        2)
+            i=1
+            read -ep "nouvelle réponse "$i" :" reponse
+            if [ -z "$reponse" ]; then
+                echo "modification impossible"
+                echo "------------------------------"
+            else # remplacer réponses
+                ((i++))
+                read -ep "nouvelle réponse "$i" :" rep
+                reponse="$reponse"+"$rep"
+                while [[ -n "$rep" ]]
+                do
+                    ((i++))
+                    read -ep "nouvelle réponse "$i" :" rep
+                    reponse="$reponse"+"$rep"
+                done
+                newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'NR == ligne {$4=reponse} {OFS="/"; print $0 }' liste)
+                echo "$newR" > liste
+                echo "modification effectuée"
+                echo "------------------------------"
+            fi
+            ;;
+        3)
+            read -ep "choix multiple (0 pour non, 1 pour oui) : " choix
+            if [[ "$choix" != "0" && "$choix" != "1" ]]; then
+                echo "modification impossible"
+                echo "------------------------------"
+            else # remplacer le choix
+                newC=$(awk -F/ -v ligne="$ligne" -v choix="$choix" 'NR == ligne {$5=choix} {OFS="/"; print $0 }' liste)
+                echo "$newC" > liste
+                echo "modification effectuée"
+                echo "------------------------------"
+            fi
+            ;;
+        4)
+            read -ep "nouvelle durée du vote(days hours min) : " duree
+            if [[ -z "$duree" || ! ("$duree" =~ ^[0-9[:space:]]+$) ]]; then
+                echo "modification impossible"
+                echo "------------------------------"
+            else # remplacer la question
+                read days hours min <<< "$duree"
+                date_debut=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $6 }' liste)
+                date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
+                newD=$(awk -F/ -v ligne="$ligne" -v date_fin="$date_fin" 'NR == ligne {$7=date_fin} {OFS="/"; print $0 }' liste)
+                echo "$newD" > liste
+                echo "modification effectuée"
+                echo "------------------------------"
+            fi
+            ;;
+        5)
+            echo "------------------------------"
+            exit 1
+            ;;
+        *)
+            echo "aucune modification choisit"
+            echo "------------------------------"
+            ;;
+    esac
+done
+
