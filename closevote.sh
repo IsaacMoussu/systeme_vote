@@ -21,7 +21,7 @@ if [ "$auteur" != "$auteurvote" ]; then
     exit 1
 else # ferme le vote avant la date de fin
     ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' listevote) # numéro de ligne correspondant au vote choisit
-    ferme=$(awk -F/ -v ligne="$ligne" 'NR == ligne {$8="fermé"} {OFS="/"; print $0 }' listevote)
+    ferme=$(awk -F/ -v ligne="$ligne" 'BEGIN {OFS="/"} NR == ligne {$8="fermé"} {print $0}' listevote)
     echo "$ferme" > listevote
     echo "le vote est maintenant fermé"
     echo "------------------------------"

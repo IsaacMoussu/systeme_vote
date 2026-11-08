@@ -41,7 +41,7 @@ while true; do
                 echo "modification impossible"
                 echo "------------------------------"
             else # remplacer la question
-                newQ=$(awk -F/ -v ligne="$ligne" -v question="$question" 'NR == ligne {$3=question} {OFS="/"; print $0 }' listevote)
+                newQ=$(awk -F/ -v ligne="$ligne" -v question="$question" 'BEGIN {OFS="/"} NR == ligne {$3=question} {print $0}' listevote)
                 echo "$newQ" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"
@@ -63,7 +63,7 @@ while true; do
                     read -ep "nouvelle réponse "$i" :" rep
                     reponse="$reponse"+"$rep"
                 done
-                newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'NR == ligne {$4=reponse} {OFS="/"; print $0 }' listevote)
+                newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'BEGIN {OFS="/"} NR == ligne {$4=reponse} {print $0}' listevote)
                 echo "$newR" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"
@@ -75,7 +75,7 @@ while true; do
                 echo "modification impossible"
                 echo "------------------------------"
             else # remplacer le choix
-                newC=$(awk -F/ -v ligne="$ligne" -v choix="$choix" 'NR == ligne {$5=choix} {OFS="/"; print $0 }' listevote)
+                newC=$(awk -F/ -v ligne="$ligne" -v choix="$choix" 'BEGIN {OFS="/"} NR == ligne {$5=choix} {print $0}' listevote)
                 echo "$newC" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"
@@ -90,7 +90,7 @@ while true; do
                 read days hours min <<< "$duree"
                 date_debut=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $6 }' listevote)
                 date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
-                newD=$(awk -F/ -v ligne="$ligne" -v date_fin="$date_fin" 'NR == ligne {$7=date_fin} {OFS="/"; print $0 }' listevote)
+                newD=$(awk -F/ -v ligne="$ligne" -v date_fin="$date_fin" 'BEGIN {OFS="/"} NR == ligne {$7=date_fin} {print $0}' listevote)
                 echo "$newD" > listevote
                 echo "modification effectuée"
                 echo "------------------------------"

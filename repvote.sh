@@ -82,4 +82,10 @@ else
     echo "votre réponse a bien été enregistrée"
 fi
 
+verif=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $9}' listevote)
+if [ "$verif" != "non modifiable" ]; then
+    swap=$(awk -F/ -v ligne="$ligne" 'BEGIN {OFS="/"} NR == ligne {$9="non modifiable"} {print $0 }' listevote)
+    echo "$swap" > listevote
+fi
+
 echo "------------------------------"
