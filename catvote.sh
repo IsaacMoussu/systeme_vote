@@ -17,7 +17,7 @@ echo "$reponse" | tr + '\n' | while read -r j
 do
     if [ -n "$j" ]; then
         echo "réponse "$i" : "$j""
-        i=$(("$i"+1))
+        ((i++))
     fi
 done
 
