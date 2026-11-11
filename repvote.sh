@@ -27,6 +27,7 @@ autorise=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $8}' listevote)
 today=$(date +%s) # converti en seconde
 date_fin=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $7}' listevote)
 timestamp=$(date -d "$date_fin" +%s) # converti en seconde
+
 if [ "$autorise" != "ouvert" ]; then
     echo "le vote numéro $numvote est fermé"
     echo "------------------------------"

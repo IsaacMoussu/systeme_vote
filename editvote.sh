@@ -47,7 +47,7 @@ while true; do
                 echo "------------------------------"
             fi
             ;;
-        2)
+        2) 
             i=1
             read -ep "nouvelle réponse "$i" :" reponse
             if [ -z "$reponse" ]; then
@@ -69,7 +69,7 @@ while true; do
                 echo "------------------------------"
             fi
             ;;
-        3)
+        3) 
             read -ep "choix multiple (0 pour non, 1 pour oui) : " choix
             if [[ "$choix" != "0" && "$choix" != "1" ]]; then
                 echo "modification impossible"
@@ -89,7 +89,13 @@ while true; do
             else # remplacer la question
                 read days hours min <<< "$duree"
                 date_debut=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $6 }' listevote)
-                date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
+
+                if [[ "$OSTYPE" == "darwin"* ]]; then
+                    date_fin=$(date -j -f "%Y-%m-%d %H:%M" "$date_debut" -v+${days}d -v+${hours}H -v+${min}M +"%Y-%m-%d %H:%M")
+                else
+                    date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
+                fi
+
                 newD=$(awk -F/ -v ligne="$ligne" -v date_fin="$date_fin" 'BEGIN {OFS="/"} NR == ligne {$7=date_fin} {print $0}' listevote)
                 echo "$newD" > listevote
                 echo "modification effectuée"
