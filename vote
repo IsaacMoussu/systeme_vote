@@ -20,8 +20,8 @@ while true; do
             fi
             ;;
         rmvote|editvote)
-            #supprime un vote deja créé en donnant son numéro et auteur
-            #modifie un vote deja créé
+            # supprime un vote deja créé en donnant son numéro et auteur
+            # modifie un vote deja créé
             nb_args=$(echo "$args" | wc -w)
             if [[ -z "$args" || ! ("$args" =~ ^[0-9[:space:]]+$) ]]; then
                 echo "veuillez choisir un numéro de vote"
@@ -45,7 +45,7 @@ while true; do
             fi
             ;;
         repvote)
-            #repond a un vote
+            # répond a un vote
             nb_args=$(echo "$args" | wc -w)
             if [[ -z "$args" || ! ("$args" =~ ^[-0-9m[:space:]]+$) ]]; then
                 echo "veuillez choisir un numéro de vote"
@@ -56,8 +56,12 @@ while true; do
             fi
             ;;
         lsvote)
-            #affiche les votes crée par un utilisateurs donné
+            # affiche les votes créés par un utilisateur donné
             ./lsvote.sh "$args" 
+            ;;
+        sysvote)
+            # génère un document pdf de statistiques du système de vote depuis son lancement
+            ./sysvote.sh
             ;;
         quit|exit)
             echo "Au revoir !"
