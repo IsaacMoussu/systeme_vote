@@ -48,24 +48,34 @@ while true; do
             fi
             ;;
         2) 
-            i=1
-            read -ep "nouvelle réponse "$i" :" reponse
-            if [ -z "$reponse" ]; then
-                echo "modification impossible"
-                echo "------------------------------"
-            else # remplacer réponses
-                ((i++))
-                read -ep "nouvelle réponse "$i" :" rep
-                reponse="$reponse"+"$rep"
-                while [[ -n "$rep" ]]
-                do
+            libre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $10}' listevote)
+            if [ "$libre" == 0 ]; then
+                i=1
+                read -ep "nouvelle réponse "$i" :" reponse
+                if [ -z "$reponse" ]; then
+                    echo "modification impossible"
+                    echo "------------------------------"
+                else # remplacer réponses
                     ((i++))
                     read -ep "nouvelle réponse "$i" :" rep
+                    while [ -z "$rep" ]
+                    do
+                        read -ep "nouvelle réponse "$i" :" rep
+                    done
                     reponse="$reponse"+"$rep"
-                done
-                newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'BEGIN {OFS="/"} NR == ligne {$4=reponse} {print $0}' listevote)
-                echo "$newR" > listevote
-                echo "modification effectuée"
+                    while [[ -n "$rep" ]]
+                    do
+                        ((i++))
+                        read -ep "nouvelle réponse "$i" :" rep
+                        reponse="$reponse"+"$rep"
+                    done
+                    newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'BEGIN {OFS="/"} NR == ligne {$4=reponse} {print $0}' listevote)
+                    echo "$newR" > listevote
+                    echo "modification effectuée"
+                    echo "------------------------------"
+                fi
+            else
+                echo "ce vote est à réponse libre"
                 echo "------------------------------"
             fi
             ;;

@@ -23,19 +23,36 @@ do
     read -ep "choix multiple (0 pour non, 1 pour oui) :" choix 
 done
 
-i=1
-read -ep "réponse "$i" :" reponse
-while [[ -n "$rep" || "$i" -eq 1 ]]
+read -ep "réponse libre (0 pour non, 1 pour oui) :" libre
+while [[ "$libre" != "0" && "$libre" != "1" ]]
 do
-    while [[ -z "$reponse" && "$i" -eq 1 ]]
-    do
-        echo "veuillez saisir une réponse"
-        read -ep "réponse "$i" :" reponse
-    done
-    ((i++))
-    read -ep "réponse "$i" :" rep
-    reponse="$reponse"+"$rep"
+    echo "veuillez saisir entre 0 et 1"
+    read -ep "réponse libre (0 pour non, 1 pour oui) :" libre 
 done
+
+if [ "$libre" == 0 ]; then
+    i=1
+    read -ep "réponse "$i" :" reponse
+    while [[ -n "$rep" || "$i" -eq 1 || "$i" -eq 2 ]]
+    do
+        while [[ -z "$reponse" && "$i" -eq 1 ]]
+        do
+            echo "veuillez saisir une réponse"
+            read -ep "réponse "$i" :" reponse
+        done
+        while [[ -z "$rep" && "$i" -eq 2 ]]
+        do
+            echo "veuillez saisir une réponse"
+            read -ep "réponse "$i" :" rep
+            if [ -n "$rep" ]; then
+                reponse="$reponse""$rep"
+            fi
+        done
+        ((i++))
+        read -ep "réponse "$i" :" rep
+        reponse="$reponse"+"$rep"
+    done
+fi
 
 read -ep "durée du vote(days hours min):" duree
 while [[ -z "$duree" || ! ("$duree" =~ ^[0-9[:space:]]+$) ]]
@@ -64,4 +81,4 @@ else
     date_fin=$(date -d "$date_debut + $days days + $hours hours + $min minutes" +"%Y-%m-%d %H:%M")
 fi
 
-echo "$numvote"/"$auteur"/"$question"/"$reponse"/"$choix"/"$date_debut"/"$date_fin"/"ouvert"/"modifiable" >> listevote
+echo "$numvote"/"$auteur"/"$question"/"$reponse"/"$choix"/"$date_debut"/"$date_fin"/"ouvert"/"modifiable"/"$libre" >> listevote
