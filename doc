@@ -13,6 +13,7 @@
 # -r Vérifie si le fichier est lisible
 # -w Vérifie si le fichier est modifiable
 # -x Vérifie si le fichier est exécutable
+# -s verifie si le fichier existe et est non vide
 
 # OPERATEURS DE CHAINE
 # = Égalité

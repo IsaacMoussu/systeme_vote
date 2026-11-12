@@ -27,7 +27,7 @@ cat << EOF > ${nom_fichier}.tex
 \usepackage[french]{babel}
 \usepackage{pgfplots}
 
-\title{Système de Vote - Rapport}
+\title{Statistique du Système de Vote}
 \author{$auteur_fichier}
 \date{\today}
 

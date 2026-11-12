@@ -61,7 +61,7 @@ while true; do
             ;;
         sysvote)
             # génère un document pdf de statistiques du système de vote depuis son lancement
-            ./sysvote.sh
+            ./sysvote.sh "$args"
             ;;
         quit|exit)
             echo "Au revoir !"
