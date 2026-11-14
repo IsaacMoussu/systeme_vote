@@ -9,7 +9,6 @@ read -ep "auteur du document : " auteur_fichier
 # nbr de votes a choix multiples ou non
 # nbr de votes créés par personnes (en moyenne)
 # nbr de réponses par personnes (en moyenne)
-# 
 
 nbr_votes=$(awk 'END {print NR}' listevote)
 nbr_votants=$(awk -F/ 'BEGIN {i=0} !seen[$2]++{i++} END {print i}' listereponse)

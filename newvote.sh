@@ -3,29 +3,25 @@
 echo "------------------------------"
 
 read -ep "auteur :" auteur 
-while [ -z "$auteur" ]
-do
+while [ -z "$auteur" ]; do
     echo "veuillez saisir un auteur"
     read -ep "auteur :" auteur
 done
 
 read -ep "question :" question 
-while [ -z "$question" ]
-do
+while [ -z "$question" ]; do
     echo "veuillez saisir une question"
     read -ep "question :" question 
 done
 
 read -ep "choix multiple (0 pour non, 1 pour oui) :" choix
-while [[ "$choix" != "0" && "$choix" != "1" ]]
-do
+while [[ "$choix" != "0" && "$choix" != "1" ]]; do
     echo "veuillez saisir un choix"
     read -ep "choix multiple (0 pour non, 1 pour oui) :" choix 
 done
 
 read -ep "réponse libre (0 pour non, 1 pour oui) :" libre
-while [[ "$libre" != "0" && "$libre" != "1" ]]
-do
+while [[ "$libre" != "0" && "$libre" != "1" ]]; do
     echo "veuillez saisir entre 0 et 1"
     read -ep "réponse libre (0 pour non, 1 pour oui) :" libre 
 done
@@ -33,21 +29,21 @@ done
 if [ "$libre" == 0 ]; then
     i=1
     read -ep "réponse "$i" :" reponse
-    while [[ -n "$rep" || "$i" -eq 1 || "$i" -eq 2 ]]
-    do
-        while [[ -z "$reponse" && "$i" -eq 1 ]]
-        do
+    while [[ -n "$rep" || "$i" -eq 1 || "$i" -eq 2 ]]; do
+
+        while [[ -z "$reponse" && "$i" -eq 1 ]]; do
             echo "veuillez saisir une réponse"
             read -ep "réponse "$i" :" reponse
         done
-        while [[ -z "$rep" && "$i" -eq 2 ]]
-        do
+
+        while [[ -z "$rep" && "$i" -eq 2 ]]; do
             echo "veuillez saisir une réponse"
             read -ep "réponse "$i" :" rep
             if [ -n "$rep" ]; then
                 reponse="$reponse""$rep"
             fi
         done
+
         ((i++))
         read -ep "réponse "$i" :" rep
         reponse="$reponse"+"$rep"
@@ -55,8 +51,8 @@ if [ "$libre" == 0 ]; then
 fi
 
 read -ep "durée du vote(days hours min):" duree
-while [[ -z "$duree" || ! ("$duree" =~ ^[0-9[:space:]]+$) ]]
-do
+while [[ -z "$duree" || ! ("$duree" =~ ^[0-9[:space:]]+$) ]]; do
+
     if [ -z "$duree" ]; then
         echo "veuillez saisir une durée"
         read -ep "durée du vote en heure :" duree

@@ -14,12 +14,12 @@ if [ -z "$1" ]; then
     exit 1
 fi 
 
-rep=$(awk -F/ -v mot="$1" '$2 == mot || $3 ~ mot {print " id = "$1" | auteur = "$2" | question = "$3"  " }' listevote)
+rep=$(awk -F/ -v mot="$1" '$2 == mot || $2 ~ mot || $3 ~ mot {print " id = "$1" | auteur = "$2" | question = "$3"  " }' listevote)
 
 if [ -z "$rep" ]; then 
     echo "le mot ou l'auteur que vous chercher n'apparait pas dans la liste de vote"
-    echo "------------------------------"
 else 
     echo "$rep"
-    echo "------------------------------"
 fi
+
+echo "------------------------------"

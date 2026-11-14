@@ -11,7 +11,6 @@ elif [ "$drapeau" != "-m" ]; then
 
 else
     numvote="$chiffre"
-
 fi
 
 # récup le numéro de vote (dans le fichier et pas en argument)
@@ -121,7 +120,6 @@ if [[ -n "$chiffre" && "$drapeau" == "-m" ]]; then
             while [[ -z "$rep" || ! ("$rep" =~ ^[1-"$nbr_reponse"]+$) ]]; do
                 echo "aucune réponse ne correspond"
                 read -ep "votre réponse $i : " rep
-                
             done
 
             reponse_enregistre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
@@ -133,7 +131,6 @@ if [[ -n "$chiffre" && "$drapeau" == "-m" ]]; then
                 while [[ -n "$rep" && ! ("$rep" =~ ^[1-"$nbr_reponse"]+$) ]]; do
                     echo "aucune réponse ne correspond"
                     read -ep "votre réponse $i : " rep
-
                 done
 
                 if [ -n "$rep" ]; then
@@ -146,6 +143,7 @@ if [[ -n "$chiffre" && "$drapeau" == "-m" ]]; then
             ;;
         1,0)
             read -ep "votre nouvelle réponse : " reponse_enregistre
+            
             while [ -z "$reponse_enregistre" ]; do
                 echo "saisissez au moins une nouvelle réponse"
                 read -ep "votre nouvelle réponse : " reponse_enregistre
@@ -198,7 +196,6 @@ else
             while [[ -z "$rep" || ! ("$rep" =~ ^[1-"$nbr_reponse"]+$) ]]; do
                 echo "aucune réponse ne correspond"
                 read -ep "votre réponse : " rep
-
             done
 
             reponse_enregistre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
@@ -221,7 +218,6 @@ else
             while [[ -z "$rep" || ! ("$rep" =~ ^[1-"$nbr_reponse"]+$) ]]; do
                 echo "aucune réponse ne correspond"
                 read -ep "votre réponse $i : " rep
-                
             done
 
             reponse_enregistre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
@@ -275,6 +271,7 @@ else
 
 fi
 
+# le vote deviens non modifiable si pas encore fait
 verif=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $9}' listevote)
 if [ "$verif" != "non modifiable" ]; then
     swap=$(awk -F/ -v ligne="$ligne" 'BEGIN {OFS="/"} NR == ligne {$9="non modifiable"} {print $0 }' listevote)

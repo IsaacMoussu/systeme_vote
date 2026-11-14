@@ -32,16 +32,20 @@ fi
 
 # modifie le vote
 while true; do
+
     echo "donner le numéro de ce que vous voulez vous modifier ?"
     echo -e "1 : question\n2 : réponses\n3 : choix multiple\n4 : durée du vote\n5 : réponse libre\n6 : sortir des modifications"
     read -e modif
+
     case "$modif" in
         1)
             read -ep "donner votre nouvelle question : " question
             if [ -z "$question" ]; then
                 echo "modification impossible"
                 echo "------------------------------"
+
             else # remplacer la question
+
                 newQ=$(awk -F/ -v ligne="$ligne" -v question="$question" 'BEGIN {OFS="/"} NR == ligne {$3=question} {print $0}' listevote)
                 echo "$newQ" > listevote
                 echo "modification effectuée"
@@ -53,28 +57,33 @@ while true; do
             if [ "$libre" == 0 ]; then
                 i=1
                 read -ep "nouvelle réponse "$i" :" reponse
+                
                 if [ -z "$reponse" ]; then
                     echo "modification impossible"
                     echo "------------------------------"
+
                 else # remplacer réponses
+
                     ((i++))
                     read -ep "nouvelle réponse "$i" :" rep
-                    while [ -z "$rep" ]
-                    do
+                    while [ -z "$rep" ]; do
                         read -ep "nouvelle réponse "$i" :" rep
                     done
+
                     reponse="$reponse"+"$rep"
-                    while [[ -n "$rep" ]]
-                    do
+                    
+                    while [[ -n "$rep" ]]; do
                         ((i++))
                         read -ep "nouvelle réponse "$i" :" rep
                         reponse="$reponse"+"$rep"
                     done
+
                     newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'BEGIN {OFS="/"} NR == ligne {$4=reponse} {print $0}' listevote)
                     echo "$newR" > listevote
                     echo "modification effectuée"
                     echo "------------------------------"
                 fi
+
             else
                 echo "ce vote est à réponse libre"
                 echo "------------------------------"
@@ -82,10 +91,13 @@ while true; do
             ;;
         3) 
             read -ep "choix multiple (0 pour non, 1 pour oui) : " choix
+
             if [[ "$choix" != "0" && "$choix" != "1" ]]; then
                 echo "modification impossible"
                 echo "------------------------------"
+
             else # remplacer le choix
+
                 newC=$(awk -F/ -v ligne="$ligne" -v choix="$choix" 'BEGIN {OFS="/"} NR == ligne {$5=choix} {print $0}' listevote)
                 echo "$newC" > listevote
                 echo "modification effectuée"
@@ -94,10 +106,13 @@ while true; do
             ;;
         4)
             read -ep "nouvelle durée du vote(days hours min) : " duree
+
             if [[ -z "$duree" || ! ("$duree" =~ ^[0-9[:space:]]+$) ]]; then
                 echo "modification impossible"
                 echo "------------------------------"
+
             else # remplacer la question
+
                 read days hours min <<< "$duree"
                 date_debut=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $6 }' listevote)
 
@@ -130,21 +145,23 @@ while true; do
 
                     i=1
                     read -ep "réponse "$i" :" reponse
-                    while [[ -n "$rep" || "$i" -eq 1 || "$i" -eq 2 ]]
-                    do
-                        while [[ -z "$reponse" && "$i" -eq 1 ]]
-                        do
+                    while [[ -n "$rep" || "$i" -eq 1 || "$i" -eq 2 ]]; do
+
+                        while [[ -z "$reponse" && "$i" -eq 1 ]]; do
                             echo "veuillez saisir une réponse"
                             read -ep "réponse "$i" :" reponse
                         done
-                        while [[ -z "$rep" && "$i" -eq 2 ]]
-                        do
+
+                        while [[ -z "$rep" && "$i" -eq 2 ]]; do
+
                             echo "veuillez saisir une réponse"
                             read -ep "réponse "$i" :" rep
                             if [ -n "$rep" ]; then
                                 reponse="$reponse""$rep"
                             fi
+
                         done
+
                         ((i++))
                         read -ep "réponse "$i" :" rep
                         reponse="$reponse"+"$rep"

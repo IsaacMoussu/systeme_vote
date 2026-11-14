@@ -2,6 +2,7 @@
 
 echo "Bienvenue dans le système de vote."
 while true; do
+
     read -ep "saisir une commande : " cmd args
     case "$cmd" in
         newvote)
@@ -10,11 +11,14 @@ while true; do
             ;;
         catvote)
             # affiche le contenu d'un vote en donnant son numéro
+
             nb_args=$(echo "$args" | wc -w)
             if [[ -z "$args" || ! ("$args" =~ ^[0-9[:space:]]+$) ]]; then
                 echo "veuillez choisir un numéro de vote"
+
             elif [ "$nb_args" -ge 2 ]; then
                 echo "veuillez choisir un seul vote"
+
             else
                 ./catvote.sh "$args"
             fi
@@ -22,35 +26,45 @@ while true; do
         rmvote|editvote)
             # supprime un vote deja créé en donnant son numéro et auteur
             # modifie un vote deja créé
+
             nb_args=$(echo "$args" | wc -w)
             if [[ -z "$args" || ! ("$args" =~ ^[0-9[:space:]]+$) ]]; then
                 echo "veuillez choisir un numéro de vote"
+
             elif [ "$nb_args" -ge 2 ]; then
                 echo "veuillez choisir un seul vote"
+
             elif [ "$cmd" == rmvote ]; then
                 ./rmvote.sh "$args"
+
             elif [ "$cmd" == editvote ]; then
                 ./editvote.sh "$args"
             fi
             ;;
         closevote)
             # ferme un vote avant la date de fin
+
             nb_args=$(echo "$args" | wc -w)
             if [[ -z "$args" || ! ("$args" =~ ^[0-9[:space:]]+$) ]]; then
                 echo "veuillez choisir un numéro de vote"
+
             elif [ "$nb_args" -ge 2 ]; then
                 echo "veuillez choisir un seul vote"
+
             else
                 ./closevote.sh "$args"
             fi
             ;;
         repvote)
             # répond a un vote
+
             nb_args=$(echo "$args" | wc -w)
             if [[ -z "$args" || ! ("$args" =~ ^[-0-9m[:space:]]+$) ]]; then
                 echo "veuillez choisir un numéro de vote"
+
             elif [ "$nb_args" -ge 3 ]; then
                 echo "veuillez choisir un seul vote"
+                
             else
                 ./repvote.sh "$args"
             fi
