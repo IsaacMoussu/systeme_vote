@@ -102,7 +102,7 @@ if [[ -n "$chiffre" && "$drapeau" == "-m" ]]; then
             done
 
             reponse_enregistre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
-        ;;
+            ;;
         0,1)
             echo "choisissez un ou plusieurs numéros de réponse parmi les suivantes :"
 
@@ -143,7 +143,7 @@ if [[ -n "$chiffre" && "$drapeau" == "-m" ]]; then
                 fi
 
             done
-        ;;
+            ;;
         1,0)
             read -ep "votre nouvelle réponse : " reponse_enregistre
             while [ -z "$reponse_enregistre" ]; do
@@ -151,7 +151,7 @@ if [[ -n "$chiffre" && "$drapeau" == "-m" ]]; then
                 read -ep "votre nouvelle réponse : " reponse_enregistre
 
             done
-        ;;
+            ;;
         1,1)
             i=1
             read -ep "votre nouvelle réponse "$i" : " reponse_enregistre
@@ -168,7 +168,7 @@ if [[ -n "$chiffre" && "$drapeau" == "-m" ]]; then
                 reponse_enregistre="$reponse_enregistre"+"$rep"
 
             done
-        ;;
+            ;;
     esac
 
     newR=$(awk -F/ -v ligne="$ancienne_reponse" -v reponse="$reponse_enregistre" 'BEGIN {OFS="/"} NR == ligne {$3=reponse} {print $0}' listereponse)
@@ -202,7 +202,7 @@ else
             done
 
             reponse_enregistre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $4}' listevote | awk -F+ -v rep="$rep" '{print $rep}')
-        ;;
+            ;;
         0,1)
             echo "choisissez un ou plusieurs numéros de réponse parmi les suivantes :"
             
@@ -241,7 +241,7 @@ else
                 fi
                 
             done
-        ;;
+            ;;
         1,0)
             read -ep "votre réponse : " reponse_enregistre
             while [ -z "$reponse_enregistre" ]; do
@@ -249,7 +249,7 @@ else
                 read -ep "votre réponse : " reponse_enregistre
 
             done
-        ;;
+            ;;
         1,1)
             i=1
             read -ep "votre réponse "$i" : " reponse_enregistre
@@ -266,7 +266,7 @@ else
                 reponse_enregistre="$reponse_enregistre"+"$rep"
 
             done
-        ;;
+            ;;
     esac
 
     echo "$numvote/$pseudo/$reponse_enregistre" >> listereponse

@@ -4,6 +4,8 @@ numvote=$1
 
 num=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $1}' listevote)
 ligne=$(awk -F/ -v nv="$numvote" 'nv == $1 {print NR}' listevote) # numéro de ligne correspondant au vote choisit
+autorise=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $9}' listevote)
+auteurvote=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $2}' listevote)
 
 echo "------------------------------"
 
@@ -13,16 +15,15 @@ if [ "$num" != "$numvote" ]; then
     exit 1
 fi
 
-autorise=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $9}' listevote)
+
 if [ "$autorise" != "modifiable" ]; then
     echo "le vote numéro $numvote n'est pas modifiable"
     echo "------------------------------"
     exit 1
 fi
 
-read -ep "saisir le nom de l'auteur du vote :" auteur
-auteurvote=$(awk -F/ -v nv="$numvote" 'nv == $1 {print $2}' listevote)
 
+read -ep "saisir le nom de l'auteur du vote :" auteur
 if [ "$auteur" != "$auteurvote" ]; then
     echo "le nom de l'auteur ne correspond pas"
     echo "------------------------------"
@@ -32,7 +33,7 @@ fi
 # modifie le vote
 while true; do
     echo "donner le numéro de ce que vous voulez vous modifier ?"
-    echo -e "1 : question\n2 : réponses\n3 : choix multiple\n4 : durée du vote\n5 : sortir des modifications"
+    echo -e "1 : question\n2 : réponses\n3 : choix multiple\n4 : durée du vote\n5 : réponse libre\n6 : sortir des modifications"
     read -e modif
     case "$modif" in
         1)
@@ -113,6 +114,56 @@ while true; do
             fi
             ;;
         5)
+            reponse_libre=$(awk -F/ -v ligne="$ligne" 'NR == ligne {print $10}' listevote)
+            read -ep "réponse libre (0 pour non, 1 pour oui) : " libre
+
+            if [[ "$libre" != "0" && "$libre" != "1" ]]; then
+                echo "modification impossible"
+                echo "------------------------------"
+
+            elif [ "$reponse_libre" !=  "$libre" ]; then # remplacer la reponse libre
+                
+                newL=$(awk -F/ -v ligne="$ligne" -v libre="$libre" 'BEGIN {OFS="/"} NR == ligne {$10=libre} {print $0}' listevote)
+                echo "$newL" > listevote
+
+                if [ "$libre" == 0 ]; then # ajouter réponses
+
+                    i=1
+                    read -ep "réponse "$i" :" reponse
+                    while [[ -n "$rep" || "$i" -eq 1 || "$i" -eq 2 ]]
+                    do
+                        while [[ -z "$reponse" && "$i" -eq 1 ]]
+                        do
+                            echo "veuillez saisir une réponse"
+                            read -ep "réponse "$i" :" reponse
+                        done
+                        while [[ -z "$rep" && "$i" -eq 2 ]]
+                        do
+                            echo "veuillez saisir une réponse"
+                            read -ep "réponse "$i" :" rep
+                            if [ -n "$rep" ]; then
+                                reponse="$reponse""$rep"
+                            fi
+                        done
+                        ((i++))
+                        read -ep "réponse "$i" :" rep
+                        reponse="$reponse"+"$rep"
+                    done
+
+                    newR=$(awk -F/ -v ligne="$ligne" -v reponse="$reponse" 'BEGIN {OFS="/"} NR == ligne {$4=reponse} {print $0}' listevote)
+
+                else # enlever les réponses
+
+                    newR=$(awk -F/ -v ligne="$ligne" 'BEGIN {OFS="/"} NR == ligne {$4=""} {print $0}' listevote)
+                
+                fi
+
+                echo "$newR" > listevote
+                echo "modification effectuée"
+                echo "------------------------------"
+            fi
+            ;;
+        6)
             echo "------------------------------"
             exit 1
             ;;
